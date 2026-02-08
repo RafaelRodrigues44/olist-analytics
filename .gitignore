@@ -1,0 +1,17 @@
+# Ambientes Virtuais e Configs
+.env
+.venv/
+env/
+venv/
+__pycache__/
+*.pyc
+
+# Dados (Não subir)
+database/db.Olist
+*.csv
+*.db
+*.sqlite
+*.log
+
+# OS
+.DS_Store
