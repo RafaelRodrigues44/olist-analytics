@@ -7,7 +7,6 @@ load_dotenv()
 
 def get_db_url():
     try:
-        # Tenta pegar dos Secrets
         return st.secrets["DATABASE_URL"]
     except (FileNotFoundError, KeyError):
         return os.getenv("DATABASE_URL")
