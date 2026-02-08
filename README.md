@@ -6,11 +6,11 @@ Este projeto é uma solução completa de Business Intelligence (BI) para análi
 
 O projeto adota uma **Arquitetura em Camadas (Layered Architecture)**, separando claramente as responsabilidades de extração de dados, regras de negócio e interface do usuário. Essa abordagem facilita a manutenção e permite que diferentes partes do sistema evoluam independentemente.
 
-### Estrutura Modular (Pattern MVC Simplificado)
+### Estrutura Modular 
 
-* **Model / ETL Layer (`etl/`)**: Responsável pela conexão com o banco de dados (Repository Pattern), execução de queries SQL e limpeza inicial dos dados. Nenhuma lógica visual reside aqui.
-* **View / UI Layer (`ui/`)**: Contém componentes visuais, gráficos (Plotly) e estilos CSS. Esta camada é "burra", apenas recebe dados e os desenha.
-* **Controller / Orchestrator (`app.py`)**: O ponto de entrada. Ele solicita os dados ao ETL, aplica filtros de usuário e decide qual componente da UI deve ser renderizado.
+* **ETL Layer (`etl/`)**: Responsável pela conexão com o banco de dados (Repository Pattern), execução de queries SQL e limpeza inicial dos dados. Nenhuma lógica visual reside aqui.
+* **UI Layer (`ui/`)**: Contém componentes visuais, gráficos (Plotly) e estilos CSS. Esta camada é "burra", apenas recebe dados e os desenha.
+* **Orchestrator (`app.py`)**: O ponto de entrada. Ele solicita os dados ao ETL, aplica filtros de usuário e decide qual componente da UI deve ser renderizado.
 
 ```mermaid
 graph TD
@@ -44,7 +44,7 @@ graph TD
     UI -->|Renderização| ST
 ```
 
-## 📂 Estrutura do Projeto
+## 📂 Estrutura de pastas
 
 ```text
 Olist-Analytics/
@@ -103,7 +103,7 @@ Este projeto utiliza o Brazilian E-Commerce Public Dataset by Olist.
 Clone o repositório e navegue até a pasta:
 
 ```bash
-git clone 
+git clone https://github.com/RafaelRodrigues44/olist-analytics.git
 cd olist-analytics
 ```
 
