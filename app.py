@@ -3,7 +3,7 @@ import pandas as pd
 from etl.repository import get_data, get_payment_data, get_logistics_data, get_geojson_state
 from etl.utils import format_br, normalize_text
 from ui.styles import CSS
-from ui.components import kpi_card
+from ui.components import kpi_card, render_footer
 from ui.charts import (
     plot_financial_evolution, plot_payment_types, plot_top_states_revenue,
     plot_delivery_status, plot_delay_distribution, plot_delay_rate_evolution,
@@ -12,6 +12,8 @@ from ui.charts import (
     plot_freight_efficiency
 )
 from ui.maps import plot_generic_choropleth
+
+st.markdown('<div id="top"></div>', unsafe_allow_html=True)
 
 st.set_page_config(page_title="Olist Analytics", layout="wide", page_icon="🇧🇷")
 st.markdown(CSS, unsafe_allow_html=True)
@@ -222,3 +224,7 @@ with tab4:
         with col_good:
             st.markdown("**Categorias com Frete Mais Barato**")
             st.plotly_chart(plot_freight_efficiency(df_log, type='cheap'), width="stretch")
+
+st.markdown(f"<style>{CSS}</style>", unsafe_allow_html=True)
+st.markdown("---")
+st.markdown(render_footer(), unsafe_allow_html=True)
