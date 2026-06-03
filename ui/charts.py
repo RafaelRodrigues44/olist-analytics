@@ -2,6 +2,8 @@ import plotly.express as px
 import pandas as pd
 
 def plot_financial_evolution(df):
+    df = df[df['order_purchase_timestamp'] < '2018-09-01']
+    
     evolucao_tempo = df.set_index('order_purchase_timestamp') \
                         .resample('ME')[['valor_venda', 'valor_frete']] \
                         .sum().reset_index()

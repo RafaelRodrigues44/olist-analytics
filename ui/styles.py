@@ -13,6 +13,6 @@ CSS = """
 .stTabs [data-baseweb="tab-panel"] { padding-top: 20px; }
 .kpi-card { background: linear-gradient(135deg, #0d3b66, #145da0); padding: 28px; border-radius: 18px; text-align: center; box-shadow: 0 6px 18px rgba(0,0,0,0.15); }
 .kpi-title { font-size: 14px; color: #cfe8ff; margin-bottom: 8px; letter-spacing: 0.5px; }
-.kpi-value { font-size: 30px; font-weight: 800; color: white; }
+.kpi-value { font-size: clamp(1.8rem, 2vw, 2.5rem); font-weight: 800; color: white; white-space: nowrap; }
 </style>
 """

@@ -79,6 +79,10 @@ with tab1:
     st.subheader("Evolução Financeira: Faturamento vs. Custo de Frete")
     st.plotly_chart(plot_financial_evolution(df), width="stretch")
 
+    st.caption(
+        "Nota - Os meses finais do dataset original da Olist possuem baixa volumetria devido à limitação temporal da coleta."
+    )
+
     st.divider()
 
     col_pay1, col_pay2 = st.columns(2)
