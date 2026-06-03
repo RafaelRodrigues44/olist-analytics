@@ -9,7 +9,7 @@ from ui.charts import (
     plot_delivery_status, plot_delay_distribution, plot_delay_rate_evolution,
     plot_delay_ranking_by_state, plot_top_categories_revenue,
     plot_top_categories_volume, plot_freight_weight_relationship,
-    plot_freight_efficiency
+    plot_freight_efficiency, plot_top_regions_revenue
 )
 from ui.maps import plot_generic_choropleth
 
@@ -99,8 +99,13 @@ with tab1:
             st.warning("Dados de pagamento indisponíveis.")
 
     with col_pay2:
-        st.subheader("Top 10 Estados (Receita)")
-        st.plotly_chart(plot_top_states_revenue(df), width="stretch")
+        if not selected_states:
+            st.subheader("Top 10 Estados (Receita)")
+        else:
+            st.subheader("Top 10 Cidades (Receita)")
+            
+        fig_regions = plot_top_regions_revenue(df, selected_states)
+        st.plotly_chart(fig_regions, width="stretch")
 
 with tab2:
     col_log1, col_log2 = st.columns(2)

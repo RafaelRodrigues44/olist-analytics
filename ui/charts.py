@@ -115,6 +115,55 @@ def plot_top_states_revenue(df):
     )
     return fig
 
+def plot_top_regions_revenue(df, selected_states=None):
+    if not selected_states:
+        group_col = 'estado_cliente'
+        label_axis = 'Estado'
+        title_chart = 'Top 10 Estados (Receita)'
+    else:
+        group_col = 'cidade_norm' 
+        label_axis = 'Cidade'
+        title_chart = f"Top 10 Cidades ({', '.join(selected_states)})" if len(selected_states) <= 3 else "Top 10 Cidades (Estados Selecionados)"
+
+    vendas_regiao = (
+        df.groupby(group_col)['valor_venda']
+        .sum()
+        .reset_index()
+        .sort_values('valor_venda', ascending=False)
+        .head(10)
+    )
+
+    if group_col == 'cidade_norm':
+        vendas_regiao[group_col] = vendas_regiao[group_col].str.title()
+
+    fig = px.bar(
+        vendas_regiao,
+        x=group_col,
+        y='valor_venda',
+        text='valor_venda',
+        labels={group_col: label_axis, 'valor_venda': 'Receita Total'},
+        color_discrete_sequence=['#145da0']
+    )
+
+    fig.update_traces(
+        texttemplate='%{text:.2s}',
+        textposition='outside',
+       
+        textfont=dict(color='#333333', size=11, family='Arial'),
+        cliponaxis=False,
+        marker=dict(line_width=0)
+    )
+
+    fig.update_layout(
+        title=title_chart,
+        paper_bgcolor="rgba(0,0,0,0)", 
+        plot_bgcolor="rgba(0,0,0,0)",
+        bargap=0.3,
+        xaxis=dict(showgrid=False),
+        yaxis=dict(showgrid=True, gridcolor='rgba(0,0,0,0.05)'),
+    )
+    return fig
+
 def plot_delivery_status(df):
     df_copy = df.copy()
     df_copy['status_entrega'] = df_copy['dias_atraso'].apply(lambda x: 'Atrasado' if x > 0 else 'No Prazo')
