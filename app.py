@@ -23,7 +23,7 @@ if df_raw.empty:
 
 st.title("📊 Olist E-Commerce Dashboard")
 
-with st.expander("🎛️ Filtros de Análise", expanded=True):
+with st.expander("Filtros de Análise", expanded=True):
     col_filtro1, col_filtro2 = st.columns(2)
     
     with col_filtro1:
@@ -73,7 +73,7 @@ with col4:
 
 st.markdown("---")
 
-tab1, tab2, tab3, tab4 = st.tabs(["💰 Visão Financeira", "⏱️ Performance de Prazos", "📦 Produtos", "🚚 Raio-X Logístico"])
+tab1, tab2, tab3, tab4 = st.tabs(["Visão Financeira", "Performance de Prazos", "Produtos", "Raio-X Logístico"])
 
 with tab1:
     st.subheader("Evolução Financeira: Faturamento vs. Custo de Frete")
@@ -142,9 +142,9 @@ with tab3:
     is_single_state = len(selected_states) == 1
     
     if is_single_state:
-        st.subheader(f"🏙️ Mapa de Calor: Cidades de {selected_states[0]}")
+        st.subheader(f"Mapa de Calor: Cidades de {selected_states[0]}")
     else:
-        st.subheader("🗺️ Mapa de Calor: Estados do Brasil")
+        st.subheader("Mapa de Calor: Estados do Brasil")
 
     top_categories = df.groupby('product_category_name')['valor_venda'].sum().sort_values(ascending=False).head(30).index.tolist()
     
@@ -216,9 +216,9 @@ with tab4:
         
         col_bad, col_good = st.columns(2)
         with col_bad:
-            st.markdown("⚠️ **Categorias com Frete Mais Caro**")
+            st.markdown("**Categorias com Frete Mais Caro**")
             st.plotly_chart(plot_freight_efficiency(df_log, type='expensive'), width="stretch")
             
         with col_good:
-            st.markdown("✅ **Categorias com Frete Mais Barato**")
+            st.markdown("**Categorias com Frete Mais Barato**")
             st.plotly_chart(plot_freight_efficiency(df_log, type='cheap'), width="stretch")

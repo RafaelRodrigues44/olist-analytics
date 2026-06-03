@@ -1,4 +1,5 @@
 import plotly.express as px
+import plotly.graph_objects as go
 import pandas as pd
 
 def plot_financial_evolution(df):
@@ -53,19 +54,29 @@ def plot_payment_types(df_pagamentos):
 
     df_pagamentos['payment_type'] = df_pagamentos['payment_type'].replace(traducao)
 
+    
+    cores_pastel = ['#2A5C8A', "#291C5B","#E38C45", "#7D2F39", '#3D5A80']
+
     fig = px.pie(
         df_pagamentos,
         values='qtd_pedidos',
         names='payment_type',
-        hole=0.55,
+        hole=0.6,
         labels={'payment_type': 'Forma de Pagamento', 'qtd_pedidos': 'Pedidos'},
-        color_discrete_sequence=['#5DADE2', '#76D7C4', '#F7DC6F', '#F8C471', '#D7BDE2', '#F5B7B1']
+        color_discrete_sequence=cores_pastel
     )
 
     fig.update_traces(
         textinfo='percent',
         textposition='inside',
-        insidetextfont=dict(color='black', size=10, family='Arial Black')
+        insidetextfont=dict(color='white', size=12, family='Arial'),
+        marker=dict(line=dict(color='rgba(0,0,0,0)', width=2))
+    )
+    
+    fig.update_layout(
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)",
+        margin=dict(t=20, b=20, l=20, r=20)
     )
     return fig
 
@@ -84,17 +95,24 @@ def plot_top_states_revenue(df):
         y='valor_venda',
         text_auto='.2s',
         labels={'estado_cliente': 'Estado', 'valor_venda': 'Receita Total'},
-        color_discrete_sequence=['#2980B9']
+        color_discrete_sequence=['#145da0']
     )
 
     fig.update_traces(
         textposition='inside',
         insidetextanchor='end',
-        textfont=dict(color='black', size=10, family='Arial Black'),
-        cliponaxis=False
+        textfont=dict(color='white', size=11, family='Arial'),
+        cliponaxis=False,
+        marker=dict(line_width=0)
     )
 
-    fig.update_layout(paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)")
+    fig.update_layout(
+        paper_bgcolor="rgba(0,0,0,0)", 
+        plot_bgcolor="rgba(0,0,0,0)",
+        bargap=0.3,
+        xaxis=dict(showgrid=False),
+        yaxis=dict(showgrid=True, gridcolor='rgba(0,0,0,0.05)')
+    )
     return fig
 
 def plot_delivery_status(df):
@@ -107,11 +125,18 @@ def plot_delivery_status(df):
         status_counts, 
         values='Qtd', 
         names='Status', 
-        hole=0.5,
+        hole=0.6,
         color='Status',
-        color_discrete_map={'Atrasado':'#E74C3C', 'No Prazo':'#2980B9'},
+        color_discrete_map={'Atrasado':'#E74C3C', 'No Prazo':'#145da0'},
         labels={'Status': 'Situação', 'Qtd': 'Total de Pedidos'}
     )
+    
+    fig.update_traces(
+        textinfo='percent',
+        textposition='inside',
+        insidetextfont=dict(color='white', size=12, family='Arial')
+    )
+    fig.update_layout(paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)")
     return fig
 
 def plot_delay_distribution(df):
@@ -120,11 +145,19 @@ def plot_delay_distribution(df):
         x='dias_atraso', 
         nbins=50, 
         labels={'dias_atraso': 'Dias de Atraso (Negativo = Adiantado)'},
-        color_discrete_sequence=['#2980B9']
+        color_discrete_sequence=['#145da0']
     )
     
     fig.add_vline(x=0, line_dash="dash", line_color="#E74C3C", annotation_text="Prazo Prometido")
-    fig.update_layout(showlegend=False, yaxis_title="Quantidade de Pedidos")
+    fig.update_layout(
+        showlegend=False, 
+        yaxis_title="Quantidade de Pedidos",
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)",
+        bargap=0.1,
+        xaxis=dict(showgrid=False),
+        yaxis=dict(showgrid=True, gridcolor='rgba(0,0,0,0.05)')
+    )
     return fig
 
 def plot_delay_rate_evolution(df):
@@ -146,6 +179,7 @@ def plot_delay_rate_evolution(df):
     )
     fig.update_traces(line_color='#2980B9')
     fig.update_yaxes(ticksuffix="%")
+    fig.update_layout(paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)")
     return fig
 
 def plot_delay_ranking_by_state(df):
@@ -164,9 +198,21 @@ def plot_delay_ranking_by_state(df):
         orientation='h',
         text_auto='.1f',
         labels={'estado_cliente': 'Estado', 'dias_atraso': 'Média de Dias de Atraso'},
-        color_discrete_sequence=['#2980B9']
+        color_discrete_sequence=['#145da0']
     )
-    fig.update_layout(yaxis={'categoryorder':'total ascending'})
+    fig.update_traces(
+        textposition='inside',
+        insidetextanchor='end',
+        textfont=dict(color='white', size=11, family='Arial'),
+        marker=dict(line_width=0)
+    )
+    fig.update_layout(
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)",
+        bargap=0.3,
+        xaxis=dict(showgrid=True, gridcolor='rgba(0,0,0,0.05)'),
+        yaxis=dict(categoryorder='total ascending', showgrid=False)
+    )
     return fig
 
 def plot_top_categories_revenue(df):
@@ -187,22 +233,25 @@ def plot_top_categories_revenue(df):
         y='product_category_name',
         orientation='h',
         text='fat_formatado',
-        color_discrete_sequence=['#2980B9'],
+        color_discrete_sequence=['#145da0'],
         labels={'product_category_name': 'Categoria', 'valor_venda': 'Faturamento (R$)'}
     )
 
     fig.update_traces(
         textposition='inside',
         insidetextanchor='end',
-        textfont=dict(color='black', size=10, family='Arial Black'),
+        textfont=dict(color='white', size=11, family='Arial'),
         cliponaxis=False,
+        marker=dict(line_width=0),
         hovertemplate="<b>%{y}</b><br>Faturamento: %{text}<extra></extra>"
     )
 
     fig.update_layout(
-        yaxis={'categoryorder': 'total ascending'},
         paper_bgcolor="rgba(0,0,0,0)",
-        plot_bgcolor="rgba(0,0,0,0)"
+        plot_bgcolor="rgba(0,0,0,0)",
+        bargap=0.3,
+        xaxis=dict(showgrid=True, gridcolor='rgba(0,0,0,0.05)'),
+        yaxis=dict(categoryorder='total ascending', showgrid=False)
     )
     return fig
 
@@ -221,22 +270,25 @@ def plot_top_categories_volume(df):
         y='product_category_name',
         orientation='h',
         text='vol_formatado',
-        color_discrete_sequence=['#2980B9'],
+        color_discrete_sequence=['#145da0'],
         labels={'product_category_name': 'Categoria', 'order_id': 'Quantidade'}
     )
 
     fig.update_traces(
         textposition='inside',
         insidetextanchor='end',
-        textfont=dict(color='black', size=10, family='Arial Black'),
+        textfont=dict(color='white', size=11, family='Arial'),
         cliponaxis=False,
+        marker=dict(line_width=0),
         hovertemplate="<b>%{y}</b><br>Vendas: %{text}<extra></extra>"
     )
 
     fig.update_layout(
-        yaxis={'categoryorder': 'total ascending'},
         paper_bgcolor="rgba(0,0,0,0)",
-        plot_bgcolor="rgba(0,0,0,0)"
+        plot_bgcolor="rgba(0,0,0,0)",
+        bargap=0.3,
+        xaxis=dict(showgrid=True, gridcolor='rgba(0,0,0,0.05)'),
+        yaxis=dict(categoryorder='total ascending', showgrid=False)
     )
     return fig
 
@@ -255,11 +307,24 @@ def plot_freight_weight_relationship(df_log):
         peso_agg, 
         x='faixa_peso', 
         y='freight_value',
+        text_auto='.2f',
         title="Relação Peso x Frete",
         labels={'faixa_peso': 'Faixa de Peso', 'freight_value': 'Frete Médio (R$)'}
     )
-    fig.update_traces(marker_color='#2980B9')
+    fig.update_traces(
+        marker_color='#145da0',
+        marker_line_width=0,
+        textposition='inside',
+        textfont=dict(color='white', size=11, family='Arial')
+    )
     fig.update_yaxes(tickprefix="R$ ", tickformat=".2f")
+    fig.update_layout(
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)",
+        bargap=0.35,
+        xaxis=dict(showgrid=False),
+        yaxis=dict(showgrid=True, gridcolor='rgba(0,0,0,0.05)')
+    )
     return fig
 
 def plot_freight_efficiency(df_log, type='expensive'):
@@ -281,9 +346,11 @@ def plot_freight_efficiency(df_log, type='expensive'):
     if type == 'expensive':
         data = cat_analysis.sort_values('frete_relativo', ascending=False).head(10)
         order = 'total ascending'
+        cor = "#58201A"
     else:
         data = cat_analysis.sort_values('frete_relativo', ascending=True).head(10)
         order = 'total descending'
+        cor = '#145da0'
 
     fig = px.bar(
         data,
@@ -291,8 +358,21 @@ def plot_freight_efficiency(df_log, type='expensive'):
         y='product_category_name',
         orientation='h',
         text_auto='.1f',
-        color_discrete_sequence=['#2980B9'],
+        color_discrete_sequence=[cor],
         labels=labels_barras
     )
-    fig.update_layout(yaxis={'categoryorder': order}, xaxis_title="% do Frete sobre Pedido")
+    fig.update_traces(
+        textposition='inside',
+        insidetextanchor='end',
+        textfont=dict(color='white', size=11, family='Arial'),
+        marker=dict(line_width=0)
+    )
+    fig.update_layout(
+        xaxis_title="% do Frete sobre Pedido",
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)",
+        bargap=0.3,
+        xaxis=dict(showgrid=True, gridcolor='rgba(0,0,0,0.05)'),
+        yaxis=dict(categoryorder=order, showgrid=False)
+    )
     return fig
